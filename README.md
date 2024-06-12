@@ -22,5 +22,7 @@ Instructions:---
     
 4). Here you can see Hash Cracker. Enter encrypted Value OF MD5, SHA!, SHA256 . IT will decrypt the hash if the hash in wordlists.
 
-![Screenshot 2024-04-23 184427](https://github.com/ethical-spy/Hash-Cracker/assets/155846967/e11c252a-db8f-4df2-8ca2-872415ab4417)
 ![Screenshot 2024-04-23 184256](https://github.com/ethical-spy/Hash-Cracker/assets/155846967/54a66021-0465-48d1-bf4a-77737cc5be37)
+![Screenshot 2024-04-23 184427](https://github.com/ethical-spy/Hash-Cracker/assets/155846967/e11c252a-db8f-4df2-8ca2-872415ab4417)
+![Screenshot 2024-05-01 105922](https://github.com/ethical-spy/Hash-Cracker/assets/155846967/c44d77e1-c0fe-414a-880f-a94fd1e3c804)
+
