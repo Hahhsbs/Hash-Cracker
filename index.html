@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Cracker</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #352f45;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            color: #7a5ca7;
+            animation: fadeInDown 1s ease-out;
+        }
+        form {
+            background-color: #2d283b;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
+            max-width: 400px;
+            width: 90%;
+            margin: 0 auto;
+            animation: slideInUp 1s ease-out;
+        }
+        label {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        input[type="text"], input[type="submit"] {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #47414f;
+            color: #ffffff;
+        }
+        input[type="submit"] {
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+            animation: pulse 1s infinite;
+            width:fit-content;
+        }
+        input[type="submit"]:hover {
+            background-color: #5c4789;
+        }
+        #progress, #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+        #result-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #47414f;
+            border-radius: 15px;
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
+            max-width: 400px;
+            width: 90%;
+            margin: 0 auto;
+            display: none;
+            animation: slideInUp 1s ease-out;
+        }
+        .warning {
+            font-size: 1em;
+            text-align: center;
+            color: #ff0000;
+            margin-top: 20px;
+            background-color: #000;
+            margin:auto
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        /* Parallax effect */
+        body:before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('https://source.unsplash.com/random');
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease-out;
+        }
+        body:hover:before {
+            transform: scale(1.1);
+        }
+        .warning1 {
+    text-align: center;
+    font-size: x-small;
+    color: lawngreen;
+    margin-top: -18px;
+}
+    </style>
+</head>
+<body>
+    <h1>Hash Cracker</h1>
+    <div class="warning">Note: This tool can crack only MD5, SHA-1, and SHA-256 hashes.</div>
+    <form id="hashForm" action="/crack" method="post">
+        <label for="hash">Enter Hash:</label>
+        <input type="text" id="hash" name="hash" required><br><br>
+        <label for="wordlist">Wordlist Path:</label>
+        <input type="text" id="wordlist" name="wordlist" value="wordlist.txt"><br><br>
+        <div class="warning1">Note: You can Choose One of them:<br>1. wordlist.txt 2. rockyou.txt</div>
+        <input type="submit" value="Crack">
+    </form>
+    <div id="progress"></div>
+    <div id="result-container">
+        <div id="result"></div>
+    </div>
+    
+
+    <script>
+        $(document).ready(function() {
+            $('#hashForm').submit(function(e) {
+                e.preventDefault();
+                $('#result').empty();
+                $('#progress').text('Processing...');
+                $('#result-container').hide();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/crack',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $('#progress').empty();
+                            $('#result').text('Password cracked: ' + response.password + ' (Algorithm: ' + response.algorithm + ')');
+                            $('#result-container').show();
+                        } else {
+                            $('#progress').empty();
+                            $('#result').text('Password not found in wordlist.');
+                            $('#result-container').show();
+                        }
+                    },
+                    error: function() {
+                        $('#progress').empty();
+                        $('#result').text('Error occurred during cracking.');
+                        $('#result-container').show();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
